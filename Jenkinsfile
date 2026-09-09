@@ -35,11 +35,20 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
-            }
-        }
+          steps {
+               sh 'kubectl apply -f deployment.yaml'
+               sh 'kubectl apply -f service.yaml'
+
+```
+    // Force Kubernetes to pull the latest Docker image
+               sh 'kubectl rollout restart deployment/mywebapp-deployment'
+
+    // Wait until the new pods are successfully running
+               sh 'kubectl rollout status deployment/mywebapp-deployment'
+}
+```
+
+}
 
         stage('Verify Deployment') {
             steps {
